@@ -1,10 +1,10 @@
 package thirdTask;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.time.temporal.TemporalAdjusters;
@@ -81,5 +81,49 @@ public class DateTime {
             nextSep1 = nextSep1.plusYears(1);
         }
         return ChronoUnit.DAYS.between(date, nextSep1);
+    }
+
+    public static long hoursUntilMidnight(LocalTime time) {
+        Duration timeBetween = Duration.between(time, LocalTime.MAX);
+        if (time.getMinute() == 0) {
+            return timeBetween.toHours() + 1;
+        }
+        else {
+            return timeBetween.toHours();
+        }
+    }
+
+
+    public static String getWeekBoundaries(LocalDate date, DayOfWeek targetDay) {
+        LocalDate sunday = date;
+        while (sunday.getDayOfWeek() != DayOfWeek.SUNDAY) {
+            sunday = sunday.minusDays(1);
+        }
+
+        LocalDate saturday = date;
+        while (saturday.getDayOfWeek() != DayOfWeek.SATURDAY) {
+            saturday = saturday.plusDays(1);
+        }
+
+        // Форматируем границы недели
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("d");
+        DateTimeFormatter fullFormatter = DateTimeFormatter.ofPattern("d MMM yyyy");
+
+        String startStr = sunday.format(dayFormatter);
+        String endStr;
+
+        if (sunday.getMonth() == saturday.getMonth() && sunday.getYear() == saturday.getYear()) {
+            endStr = saturday.format(fullFormatter);
+        } else {
+            endStr = saturday.format(fullFormatter);
+            startStr = sunday.format(fullFormatter);
+        }
+        String weekRange = startStr + " - " + endStr;
+
+        int daysToAdd = targetDay.getValue() % 7;
+        LocalDate targetDate = sunday.plusDays(daysToAdd);
+        String targetDateStr = targetDate.format(DateTimeFormatter.ofPattern("d MMM yyyy"));
+
+        return "Неделя: " + weekRange + "\n" + "\t" + targetDay + ": " + targetDateStr;
     }
 }

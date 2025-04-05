@@ -1,11 +1,15 @@
 package thirdTask;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
 public class thirdTask {
     public static void Action() {
+        Scanner scanner = new Scanner(System.in);
         // Тест 1
         System.out.println("1. Тест getMonthName:");
         System.out.println("\t3: " + DateTime.getMonthName(3));
@@ -40,5 +44,22 @@ public class thirdTask {
         // Тест 6
         System.out.println("\n6. Тест daysUntilNextSeptemberFirst:");
         System.out.println("\tСегодня до 1 сентября: " + DateTime.daysUntilNextSeptemberFirst(LocalDate.now()));
+
+        // Тест 7
+        System.out.println("\n7. Тест hoursUntilMidnight:");
+        System.out.println("\nВведите часы");
+        int hours = scanner.nextInt();
+        System.out.println("\nВведите минуты");
+        int minutes = scanner.nextInt();
+
+        System.out.println("\t" + DateTime.hoursUntilMidnight(LocalTime.of(hours, minutes)) + " часов");
+
+        // Тест 8
+        //System.out.println("\n8. Тест getDayOfWeekStartingSunday:");
+        //System.out.println("\t" + DateTime.getWeekAndDay(LocalDate.of(2023, 5, 15), DayOfWeek.WEDNESDAY));
+
+        // Тест 9
+        System.out.println("\n9. Тест getWeekBoundaries:");
+        System.out.println("\t" + DateTime.getWeekBoundaries(LocalDate.of(2025, 3, 30), DayOfWeek.SATURDAY));
     }
 }
